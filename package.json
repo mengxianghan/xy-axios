@@ -1,10 +1,10 @@
 {
-    "name": "xy-enum",
-    "version": "1.3.0",
-    "description": "枚举",
-    "main": "dist/index.umd.min.js",
-    "browser": "dist/index.umd.min.js",
-    "module": "dist/index.esm.js",
+    "name": "xy-axios",
+    "version": "1.0.0",
+    "description": "基于axios的网络请求库",
+    "main": "src/index.js",
+    "browser": "dist/index.js",
+    "module": "dist/es/index.min.js",
     "scripts": {
         "dev": "rollup -c --watch",
         "build": "rollup -c",
@@ -12,18 +12,25 @@
     },
     "repository": {
         "type": "git",
-        "url": "https://github.com/mengxianghan/xy-enum.git"
+        "url": "https://github.com/mengxianghan/xy-axios.git"
     },
+    "homepage": "http://xy-admin-docs/npm/xy-axios.html",
     "keywords": [
-        "enum"
+        "vue",
+        "axios",
+        "http",
+        "request"
     ],
     "author": "mengxianghan",
     "license": "ISC",
     "devDependencies": {
-        "@babel/core": "^7.18.5",
-        "@babel/preset-env": "^7.18.2",
-        "@rollup/plugin-babel": "^5.3.1",
+        "@babel/core": "^7.21.4",
+        "@babel/preset-env": "^7.21.4",
+        "@rollup/plugin-babel": "^6.0.3",
         "rollup-plugin-cleaner": "^1.0.0",
         "rollup-plugin-terser": "^7.0.2"
+    },
+    "dependencies": {
+        "axios": "^1.3.6"
     }
 }

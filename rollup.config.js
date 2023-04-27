@@ -3,27 +3,31 @@ import { terser } from 'rollup-plugin-terser'
 import babel from '@rollup/plugin-babel'
 import cleaner from 'rollup-plugin-cleaner'
 
+const name = 'XYAxios'
+
 export default {
-    input: 'src/main.js',
+    input: 'src/index.js',
     output: [
         {
-            file: 'dist/index.esm.js',
-            format: 'esm',
+            file: 'dist/es/index.js',
+            format: 'es',
         },
         {
-            file: 'dist/index.esm.min.js',
-            format: 'esm',
+            file: 'dist/es/index.min.js',
+            format: 'es',
             plugins: [terser()],
         },
         {
-            file: 'dist/index.umd.js',
+            file: 'dist/index.js',
             format: 'umd',
-            name: 'Enum',
+            globals: { axios: 'axios' },
+            name,
         },
         {
-            file: 'dist/index.umd.min.js',
+            file: 'dist/index.min.js',
             format: 'umd',
-            name: 'Enum',
+            globals: { axios: 'axios' },
+            name,
             plugins: [terser()],
         },
     ],
@@ -36,6 +40,7 @@ export default {
             targets: ['dist'],
         }),
     ],
+    external: ['axios'],
     watch: {
         include: 'src/**',
     },

@@ -1,35 +1,140 @@
 <!DOCTYPE html>
 <html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>example</title>
+    </head>
+    <body>
+        <div>
+            <button id="list">新闻列表</button>
+            <button id="create">创建新闻</button>
+            <button id="edit">编辑新闻</button>
+            <button id="del">删除新闻</button>
+            <button id="same">相同请求</button>
+            <button id="multiple">多个请求</button>
+            <button id="diy">自定义请求</button>
+        </div>
 
-<head>
-    <meta charset="UTF-8">
-    <title>example</title>
-</head>
+        <script src="../node_modules/axios/dist/axios.min.js"></script>
+        <script src="../dist/index.min.js"></script>
+        <script>
+            const options = {
+                interceptorRequest: (request) => {
+                    request.token = 'this is token'
+                },
+                interceptorRequestCatch: (err) => {},
+                interceptorResponse: (response, controller) => {
+                    if ([203].includes(response?.data?.code)) {
+                        controller.clear()
+                        console.log('登录状态失效，请重新登录')
+                    }
+                },
+                interceptorResponseCatch: (err) => {},
+                enableAbortController: true,
+            }
 
-<body>
-    <script src="../dist/index.umd.min.js"></script>
-    <script>
-        const myEnum = new Enum([
-            { key: 'a', value: 1, desc: 'this is a', extra: { key: 'a-key', value: 'a-value' } },
-            { key: 'b', value: 2, desc: 'this is b', extra: 'this is b of extra' },
-            { key: 'c', value: '3', desc: 'this is c', extra: 'this is c of extra'}
-        ])
-        // const data = myEnum.get('a')
-        // const key = myEnum.getKey('a')
-        // const value = myEnum.getValue('a')
-        // const desc = myEnum.getDesc('a')
-        // const extra = myEnum.getExtra('a')
+            const api = new XYAxios({
+                ...options,
+                baseURL: 'https://console-mock.apipost.cn/mock/189f753a-28cd-4bbc-94a2-0de8c4fdede7',
+            })
+            const api2 = new XYAxios({
+                ...options,
+                baseURL: 'https://demo-api.apipost.cn/api/demo',
+            })
 
-        // console.log('data:', data)
-        // console.log('key:', key)
-        // console.log('value:', value)
-        // console.log('desc:', desc)
-        // console.log('extra:', extra)
-        // console.log(myEnum.getList())
+            async function getList() {
+                try {
+                    const result = await api
+                        .get('/getList', { index: 1, current: 1, pageSize: 10 })
+                        .catch((err) => {
+                            console.error(err)
+                        })
+                    console.log(result)
+                } catch (error) {}
+            }
 
-        console.log(myEnum.is('a', 1))
+            function create() {
+                api.post('/create', { content: 'this is news content' })
+                    .then((res) => {
+                        console.log(res)
+                    })
+                    .catch((err) => {
+                        console.error(err)
+                    })
+            }
 
-    </script>
-</body>
+            function edit() {
+                api.put('/edit', { content: 'this is news content' })
+                    .then((res) => {
+                        console.log(res)
+                    })
+                    .catch((err) => {
+                        console.error(err)
+                    })
+            }
 
+            function del() {
+                api.delete('/delete', { id: 1 })
+                    .then((res) => {
+                        console.log(res)
+                    })
+                    .catch((err) => {
+                        console.error(err)
+                    })
+            }
+
+            const listBtn = document.getElementById('list')
+            const createBtn = document.getElementById('create')
+            const editBtn = document.getElementById('edit')
+            const delBtn = document.getElementById('del')
+            const multipleBtn = document.getElementById('multiple')
+            const sameBtn = document.getElementById('same')
+            const diyBtn = document.getElementById('diy')
+
+            listBtn.addEventListener('click', () => {
+                getList()
+            })
+
+            createBtn.addEventListener('click', () => {
+                create()
+            })
+
+            editBtn.addEventListener('click', () => {
+                edit()
+            })
+
+            delBtn.addEventListener('click', () => {
+                del()
+            })
+
+            multipleBtn.addEventListener('click', () => {
+                getList()
+                setTimeout(() => {
+                    create()
+                }, 1000)
+                setTimeout(() => {
+                    edit()
+                }, 2000)
+                setTimeout(() => {
+                    del()
+                }, 3000)
+            })
+
+            sameBtn.addEventListener('click', () => {
+                getList()
+                getList()
+            })
+
+            diyBtn.addEventListener('click', () => {
+                api2.store
+                    .get('/news_list?mobile=18289454846&theme_news=国际新闻&page=1&pageSize=20')
+                    .then((res) => {
+                        console.log(res)
+                    })
+                    .catch(() => {})
+            })
+        </script>
+    </body>
 </html>
