@@ -1,7 +1,7 @@
 (function (global, factory) {
   typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory(require('axios')) :
   typeof define === 'function' && define.amd ? define(['axios'], factory) :
-  (global = typeof globalThis !== 'undefined' ? globalThis : global || self, global.XYAxios = factory(global.axios));
+  (global = typeof globalThis !== 'undefined' ? globalThis : global || self, global.XYHttp = factory(global.axios));
 })(this, (function (axios) { 'use strict';
 
   function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'default' in e ? e : { 'default': e }; }
@@ -217,10 +217,10 @@
 
   var _opts = /*#__PURE__*/new WeakMap();
   var _instance = /*#__PURE__*/new WeakMap();
-  var XYAxios = /*#__PURE__*/function () {
-    function XYAxios() {
+  var Http = /*#__PURE__*/function () {
+    function Http() {
       var options = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
-      _classCallCheck(this, XYAxios);
+      _classCallCheck(this, Http);
       _classPrivateFieldInitSpec(this, _opts, {
         writable: true,
         value: void 0
@@ -268,7 +268,7 @@
         return Promise.reject(err);
       });
     }
-    _createClass(XYAxios, [{
+    _createClass(Http, [{
       key: "store",
       get: function get() {
         return _classPrivateFieldGet(this, _instance);
@@ -412,9 +412,9 @@
         }, config));
       }
     }]);
-    return XYAxios;
+    return Http;
   }();
 
-  return XYAxios;
+  return Http;
 
 }));

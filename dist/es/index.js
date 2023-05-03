@@ -209,10 +209,10 @@ function isFunction(val) {
 
 var _opts = /*#__PURE__*/new WeakMap();
 var _instance = /*#__PURE__*/new WeakMap();
-var XYAxios = /*#__PURE__*/function () {
-  function XYAxios() {
+var Http = /*#__PURE__*/function () {
+  function Http() {
     var options = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
-    _classCallCheck(this, XYAxios);
+    _classCallCheck(this, Http);
     _classPrivateFieldInitSpec(this, _opts, {
       writable: true,
       value: void 0
@@ -260,7 +260,7 @@ var XYAxios = /*#__PURE__*/function () {
       return Promise.reject(err);
     });
   }
-  _createClass(XYAxios, [{
+  _createClass(Http, [{
     key: "store",
     get: function get() {
       return _classPrivateFieldGet(this, _instance);
@@ -404,7 +404,7 @@ var XYAxios = /*#__PURE__*/function () {
       }, config));
     }
   }]);
-  return XYAxios;
+  return Http;
 }();
 
-export { XYAxios as default };
+export { Http as default };
