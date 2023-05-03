@@ -1,3 +1,3 @@
-import XYAxios from './xyaxios'
+import Http from './http'
 
-export default XYAxios
+export default Http

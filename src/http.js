@@ -2,7 +2,7 @@ import axios from 'axios'
 import Pending from './pending'
 import { isFunction } from './utils/is'
 
-export default class XYAxios {
+export default class Http {
     #opts
     #instance
 

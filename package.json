@@ -1,5 +1,5 @@
 {
-    "name": "xy-axios",
+    "name": "xy-http",
     "version": "1.0.0",
     "description": "基于axios的网络请求库",
     "main": "src/index.js",

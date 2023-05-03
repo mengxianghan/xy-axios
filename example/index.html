@@ -35,11 +35,11 @@
                 enableAbortController: true,
             }
 
-            const api = new XYAxios({
+            const api = new XYHttp({
                 ...options,
                 baseURL: 'https://console-mock.apipost.cn/mock/189f753a-28cd-4bbc-94a2-0de8c4fdede7',
             })
-            const api2 = new XYAxios({
+            const api2 = new XYHttp({
                 ...options,
                 baseURL: 'https://demo-api.apipost.cn/api/demo',
             })
