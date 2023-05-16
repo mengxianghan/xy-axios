@@ -208,7 +208,7 @@ function isFunction(val) {
 }
 
 var _opts = /*#__PURE__*/new WeakMap();
-var _instance = /*#__PURE__*/new WeakMap();
+var _axios = /*#__PURE__*/new WeakMap();
 var Http = /*#__PURE__*/function () {
   function Http() {
     var options = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
@@ -217,7 +217,7 @@ var Http = /*#__PURE__*/function () {
       writable: true,
       value: void 0
     });
-    _classPrivateFieldInitSpec(this, _instance, {
+    _classPrivateFieldInitSpec(this, _axios, {
       writable: true,
       value: void 0
     });
@@ -227,9 +227,9 @@ var Http = /*#__PURE__*/function () {
       interceptorResponse = options.interceptorResponse,
       interceptorResponseCatch = options.interceptorResponseCatch;
     _classPrivateFieldSet(this, _opts, _objectSpread2({}, options));
-    _classPrivateFieldSet(this, _instance, axios.create(_classPrivateFieldGet(this, _opts)));
+    _classPrivateFieldSet(this, _axios, axios.create(_classPrivateFieldGet(this, _opts)));
     var pending = new Pending();
-    _classPrivateFieldGet(this, _instance).interceptors.request.use(function (request) {
+    _classPrivateFieldGet(this, _axios).interceptors.request.use(function (request) {
       // 取消重复请求
       if (enableAbortController && request.enableAbortController !== false) {
         pending.add(request);
@@ -244,7 +244,7 @@ var Http = /*#__PURE__*/function () {
       }
       return Promise.reject(err);
     });
-    _classPrivateFieldGet(this, _instance).interceptors.response.use(function (response) {
+    _classPrivateFieldGet(this, _axios).interceptors.response.use(function (response) {
       pending.remove(response.config);
       if (isFunction(interceptorResponse)) {
         interceptorResponse(response, pending);
@@ -263,7 +263,7 @@ var Http = /*#__PURE__*/function () {
   _createClass(Http, [{
     key: "store",
     get: function get() {
-      return _classPrivateFieldGet(this, _instance);
+      return _classPrivateFieldGet(this, _axios);
     }
 
     /**
@@ -277,7 +277,7 @@ var Http = /*#__PURE__*/function () {
       var _this = this;
       var config = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
       return new Promise(function (resolve, reject) {
-        _classPrivateFieldGet(_this, _instance).request(_objectSpread2({}, config)).then(function (res) {
+        _classPrivateFieldGet(_this, _axios).request(_objectSpread2({}, config)).then(function (res) {
           resolve(res.data);
         }, function (err) {
           reject(err);
