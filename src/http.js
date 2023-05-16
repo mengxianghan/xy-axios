@@ -4,7 +4,7 @@ import { isFunction } from './utils/is'
 
 export default class Http {
     #opts
-    #instance
+    #axios
 
     constructor(options = {}) {
         const {
@@ -18,11 +18,11 @@ export default class Http {
         this.#opts = {
             ...options,
         }
-        this.#instance = axios.create(this.#opts)
+        this.#axios = axios.create(this.#opts)
 
         const pending = new Pending()
 
-        this.#instance.interceptors.request.use(
+        this.#axios.interceptors.request.use(
             (request) => {
                 // 取消重复请求
                 if (enableAbortController && request.enableAbortController !== false) {
@@ -43,7 +43,7 @@ export default class Http {
             }
         )
 
-        this.#instance.interceptors.response.use(
+        this.#axios.interceptors.response.use(
             (response) => {
                 pending.remove(response.config)
 
@@ -67,7 +67,7 @@ export default class Http {
     }
 
     get store() {
-        return this.#instance
+        return this.#axios
     }
 
     /**
@@ -77,7 +77,7 @@ export default class Http {
      */
     request(config = {}) {
         return new Promise((resolve, reject) => {
-            this.#instance
+            this.#axios
                 .request({
                     //...this.#opts,
                     ...config,
