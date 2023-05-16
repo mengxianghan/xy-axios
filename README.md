@@ -1,4 +1,4 @@
-# XYAxios 网络请求库
+# XYHttp 网络请求库
 
 基于 `Axios` 网络请求库
 
@@ -7,14 +7,15 @@
 使用 npm：
 
 ```shell
-npm install axios xy-axios -S
+npm install axios xy-http -S
 ```
 
 使用 jsDelivr CDN：
 
 ```html
+
 <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/xy-axios/dist/index.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/xy-http/dist/index.min.js"></script>
 ```
 
 ## 示例
@@ -22,104 +23,104 @@ npm install axios xy-axios -S
 ### 基础用法
 
 ```js
-import XYAxios from 'xy-axios'
+import XYHttp from "docs/npm/xy-http";
 
 const options = {
-    baseURL: 'https://api.example.com',
-    timeout: 1000
-}
+  baseURL: "https://api.example.com",
+  timeout: 1000
+};
 
-const request = new XYAxios(options)
+const request = new XYHttp(options);
 
-request.get('/getPageList', { current: 1, pageSize: 1 })
-    .then((res) => {
-        console.log(res)
-    })
-    .catch((err) => {
-    })
+request.get("/getPageList", { current: 1, pageSize: 1 })
+  .then((res) => {
+    console.log(res);
+  })
+  .catch((err) => {
+  });
 ```
 
 ### 拦截器
 
 ```js
-import XYAxios from 'xy-axios'
+import XYHttp from 'docs/npm/xy-http'
 
 const options = {
-    baseURL: 'https://api.example.com',
-    timeout: 1000,
-    // 请求拦截
-    interceptorRequest: (request) => {
-        // 添加 token
-        request.headers['token'] = 'Bearer xxxxxxxxx'
-    },
-    // 请求拦截异常
-    interceptorRequestCatch: (err) => {
-        console.error(err)
-    },
-    // 响应拦截
-    interceptorResponse: (response) => {
-        if (response.data.code === 203) {
-            console.log('token 失效，请重新登录')
-            window.location.href = '/login'
-        }
-    },
-    // 响应拦截异常
-    interceptorResponseCatch: (err) => {
-        console.error(err)
+  baseURL: 'https://api.example.com',
+  timeout: 1000,
+  // 请求拦截
+  interceptorRequest: (request) => {
+    // 添加 token
+    request.headers['token'] = 'Bearer xxxxxxxxx'
+  },
+  // 请求拦截异常
+  interceptorRequestCatch: (err) => {
+    console.error(err)
+  },
+  // 响应拦截
+  interceptorResponse: (response) => {
+    if (response.data.code === 203) {
+      console.log('token 失效，请重新登录')
+      window.location.href = '/login'
     }
+  },
+  // 响应拦截异常
+  interceptorResponseCatch: (err) => {
+    console.error(err)
+  }
 }
 
-const request = new XYAxios(options)
+const request = new XYHttp(options)
 
 request.get('/getPageList', { current: 1, pageSize: 1 })
-    .then((res) => {
-        console.log(res)
-    })
-    .catch((err) => {
-    })
+  .then((res) => {
+    console.log(res)
+  })
+  .catch((err) => {
+  })
 ```
 
 ### 取消相同请求
 
 ```js {10-13,32}
-import XYAxios from 'xy-axios'
+import XYHttp from 'docs/npm/xy-http'
 
 const options = {
-    baseURL: 'https://api.example.com',
-    timeout: 1000,
-    enableAbortContrller: true,
-    interceptorResponse: (response, controller) => {
-        if (response.data.code === 203) {
-            console.log('token 失效，请重新登录')
-            // 终止所有请求（仅开启终止控制器时有效）
-            controller.clear()
-            // 同时发起多个请求且未调用 controller.clear() ，下方代码将会执行多次
-            window.location.href = '/login'
-        }
-    },
+  baseURL: 'https://api.example.com',
+  timeout: 1000,
+  enableAbortContrller: true,
+  interceptorResponse: (response, controller) => {
+    if (response.data.code === 203) {
+      console.log('token 失效，请重新登录')
+      // 终止所有请求（仅开启终止控制器时有效）
+      controller.clear()
+      // 同时发起多个请求且未调用 controller.clear() ，下方代码将会执行多次
+      window.location.href = '/login'
+    }
+  },
 }
 
-const request = new XYAxios(options)
+const request = new XYHttp(options)
 
 function getList() {
-    request.get('/getPageList', { current: 1, pageSize: 1 })
-        .then((res) => {
-            console.log(res)
-        })
-        .catch((err) => {
-        })
+  request.get('/getPageList', { current: 1, pageSize: 1 })
+    .then((res) => {
+      console.log(res)
+    })
+    .catch((err) => {
+    })
 }
 
 function getList2() {
-    request.get('/getPageList',
-        { current: 1, pageSize: 1 },
-        { enableAbortController: false }
-    )
-        .then((res) => {
-            console.log(res)
-        })
-        .catch((err) => {
-        })
+  request.get('/getPageList',
+    { current: 1, pageSize: 1 },
+    { enableAbortController: false }
+  )
+    .then((res) => {
+      console.log(res)
+    })
+    .catch((err) => {
+    })
 }
 
 getList() // 请求会被取消
@@ -133,156 +134,150 @@ getList2()
 ### 请求多个服务
 
 ```js
-import XYAxios from 'xy-axios'
+import XYHttp from 'docs/npm/xy-http'
 
 const options = {
-    timeout: 1000
+  timeout: 1000
 }
 
 // 服务 1
-const request1 = new XYAxios({
-    ...options,
-    baseURL: 'https://api.example_1.com/'
+const request1 = new XYHttp({
+  ...options,
+  baseURL: 'https://api.example_1.com/'
 })
 
 // 服务 2
-const request2 = new XYAxios({
-    ...options,
-    baseURL: 'https://api.example_2.com'
+const request2 = new XYHttp({
+  ...options,
+  baseURL: 'https://api.example_2.com'
 })
 
 // 请求服务 1
 request1.get('/getPageList', { current: 1, pageSize: 10 })
-    .then((res) => {
-        console.log(res)
-    })
-    .catch(() => {
-    })
+  .then((res) => {
+    console.log(res)
+  })
+  .catch(() => {
+  })
 
 // 请求服务 2
 request2.get('/getPageList', { current: 1, pageSize: 10 })
-    .then((res) => {
-        console.log(res)
-    })
-    .catch(() => {
-    })
+  .then((res) => {
+    console.log(res)
+  })
+  .catch(() => {
+  })
 ```
 
-### 扩展 XYAxios
+### 扩展 XYHttp
 
 ```js
-import XYAxios from 'xy-axios'
+import XYHttp from 'docs/npm/xy-http'
 import jschardet from 'jschardet'
 
 /**
  * 读取文件
  */
-class ReadFile extends XYAxios {
-    constructor() {
-        super({
-            baseURL: '',
-            responseType: 'blob',
-            transformResponse: [
-                async (data) => {
-                    const encoding = await this._encoding(data)
-                    return new Promise((resolve) => {
-                        let reader = new FileReader()
-                        reader.readAsText(data, encoding)
-                        reader.onload = function () {
-                            resolve(reader.result)
-                        }
-                    })
-                },
-            ],
-
-        })
-    }
-
-    /**
-     * 文本编码
-     * @param data
-     * @returns {Promise<unknown>}
-     * @private
-     */
-    _encoding(data) {
-        return new Promise((resolve) => {
+class ReadFile extends XYHttp {
+  constructor() {
+    super({
+      baseURL: '',
+      responseType: 'blob',
+      transformResponse: [
+        async (data) => {
+          const encoding = await this._encoding(data)
+          return new Promise((resolve) => {
             let reader = new FileReader()
-            reader.readAsBinaryString(data)
-            reader.onload = function () {
-                resolve(jschardet.detect(reader?.result).encoding)
+            reader.readAsText(data, encoding)
+            reader.onload = function() {
+              resolve(reader.result)
             }
-        })
-    }
+          })
+        },
+      ],
+
+    })
+  }
+
+  /**
+   * 文本编码
+   * @param data
+   * @returns {Promise<unknown>}
+   * @private
+   */
+  _encoding(data) {
+    return new Promise((resolve) => {
+      let reader = new FileReader()
+      reader.readAsBinaryString(data)
+      reader.onload = function() {
+        resolve(jschardet.detect(reader?.result).encoding)
+      }
+    })
+  }
 }
 
 const readFile = new ReadFile()
 
 readFile.get('https://cdn.example.com/1.txt')
-    .then((res) => {
-        console.log(res)
-    })
-    .catch((err) => {
-    })
+  .then((res) => {
+    console.log(res)
+  })
+  .catch((err) => {
+  })
 ```
 
-## XYAxios 实例
+## API
 
-### 创建一个新实例
+### 参数
 
-new XYAxios([options])
+这是创建请求时可以用的配置项。仅列举出了`XYHttp`新增的配置。 [更多参数](https://www.axios-http.cn/docs/req_config)
 
-```js
-const instance = new XYAxios({
-    baseURL: 'http://example.com',
-    timeout: 1000,
-    headers: {
-        'X-Custom-Header': 'foobar'
-    }
-})
-```
+| 名称                       | 说明                        | 类型         | 默认值                                |
+|--------------------------|---------------------------|------------|------------------------------------|
+| enableAbortController    | 启用终止控制器。启用后会将同时发送的相同地请求取消 | `boolean`  | `false`                            |
+| interceptorRequest       | 请求拦截回调                    | `function` | `function(request){}`              |
+| interceptorRequestCatch  | 请求异常回调                    | `function` | `function(err){}`                  |
+| interceptorResponse      | 响应拦截回调                    | `function` | `function(response, controller){}` |
+| interceptorResponseCatch | 响应拦截异常回调                  | `function` | `function(err){}`                  |
 
-### 实例方法
-**以下是可用的实例方法。指定的配置将与实例的配置合并。**
+### 方法
 
-instance.request(config)  
+**基础实例方法**
 
-instance.get(url[, params[, config]])  
+request(config)
 
-instance.delete(url[, data[, config]])
+get(url[, params[, config]])
 
-instance.post(url[, data[, config]])  
+delete(url[, data[, config]])
 
-instance.put(url[, data[, config]])  
+post(url[, data[, config]])
 
-instance.upload(url, formData[, config])
+put(url[, data[, config]])
 
-instance.download(url[, config])
+upload(url, formData[, config])
 
-**其他实例方法**  
+download(url[, config])
 
-instance.store.head(url[, config])  
+**其他实例方法**
 
-instance.store.options(url[, config])  
+第一步获取 store：
 
-instance.store.patch(url[, data[, config]])  
+const store = instance.store
 
-instance.store.getUri([config])
+第二步使用：
 
-## 请求配置
-这是创建请求时可以用的配置项。仅列举出了`XYAxios`新增的配置。其他配置请参考 [Axios](https://www.axios-http.cn/docs/req_config)
+store.head(url[, config])
 
-```js
-{
-  // 启用终止控制器。启用后会将同时发送的相同地请求取消
-  enableAbortController: false,
-  // 请求拦截回调
-  interceptorRequest: function(request){},
-  // 请求异常回调
-  interceptorRequestCatch: function(err){},
-  // 响应拦截回调
-  interceptorResponse: function(response, controller){},
-  // 响应拦截异常回调
-  interceptorResponseCatch: function(err){}
-}
-```
-更多使用方法参考 [Axios](https://www.axios-http.cn/docs/req_config)
+store.options(url[, config])
+
+store.patch(url[, data[, config]])
+
+store.getUri([config])
+
+## 依赖
+
+[axios](https://www.npmjs.com/package/axios)
+
+## 参考文档
+
+[axios](https://www.axios-http.cn/docs/intro)
